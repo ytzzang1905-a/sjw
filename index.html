@@ -1,26 +1,1185 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>나의 첫 홈페이지</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>성주원 · 개인 홈페이지</title>
+  <meta name="description" content="법조기자 성주원의 개인 홈페이지" />
+  <meta property="og:title" content="성주원 · 개인 홈페이지" />
+  <meta property="og:description" content="법조기자 성주원의 개인 홈페이지" />
+  <meta property="og:type" content="website" />
   <style>
-    body {font-family: sans-serif; margin:0; text-align:center;}
-    header {background:#4A90E2; color:white; padding:20px;}
-    section {padding:20px;}
-    footer {background:#f0f0f0; padding:10px; font-size:0.9em;}
-    button {padding:10px 20px; border:none; background:#4A90E2; color:white; cursor:pointer;}
-    button:hover {background:#357ABD;}
+    :root {
+      --bg: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --primary: #2563eb;
+      --primary-2: #1e40af;
+      --card: #f8fafc;
+      --border: #e5e7eb;
+      --accent: #06b6d4;
+      --accent-2: #0891b2;
+      --gradient-1: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      --gradient-2: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+      --gradient-3: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+      --gradient-4: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+      --success: #10b981;
+      --error: #ef4444;
+      --warning: #f59e0b;
+    }
+    
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #0b1220;
+        --text: #e5e7eb;
+        --muted: #9ca3af;
+        --primary: #60a5fa;
+        --primary-2: #3b82f6;
+        --card: #0f172a;
+        --border: #1f2937;
+        --accent: #22d3ee;
+        --accent-2: #06b6d4;
+      }
+    }
+    
+    [data-theme="dark"] {
+      --bg: #0b1220;
+      --text: #e5e7eb;
+      --muted: #9ca3af;
+      --primary: #60a5fa;
+      --primary-2: #3b82f6;
+      --card: #0f172a;
+      --border: #1f2937;
+      --accent: #22d3ee;
+      --accent-2: #06b6d4;
+    }
+
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      margin: 0; 
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Noto Sans KR, Helvetica, Arial, sans-serif;
+      color: var(--text); 
+      background: var(--bg); 
+      line-height: 1.6;
+      scroll-behavior: smooth;
+      overflow-x: hidden;
+    }
+
+    /* 애니메이션 */
+    @keyframes float {
+      0%, 100% { transform: translateY(0px); }
+      50% { transform: translateY(-20px); }
+    }
+    
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    @keyframes slideInLeft {
+      from { opacity: 0; transform: translateX(-30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes slideInRight {
+      from { opacity: 0; transform: translateX(30px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+    
+    @keyframes shimmer {
+      0% { background-position: -200px 0; }
+      100% { background-position: calc(200px + 100%) 0; }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    /* 헤더 */
+    header {
+      position: sticky; 
+      top: 0; 
+      z-index: 50; 
+      border-bottom: 1px solid var(--border);
+      background: linear-gradient(135deg, rgba(37,99,235,0.1), rgba(6,182,212,0.05));
+      backdrop-filter: saturate(120%) blur(20px);
+      transition: all 0.3s ease;
+    }
+    
+    header.scrolled {
+      background: linear-gradient(135deg, rgba(37,99,235,0.95), rgba(6,182,212,0.9));
+      backdrop-filter: saturate(120%) blur(25px);
+    }
+    
+    .nav {
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: 12px 16px; 
+      display: flex; 
+      align-items: center; 
+      gap: 12px;
+      justify-content: space-between;
+      animation: slideInUp 0.6s ease;
+    }
+    
+    .brand { 
+      font-weight: 700; 
+      letter-spacing: -0.3px;
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-size: 20px;
+    }
+    
+    .nav a { 
+      color: var(--text); 
+      text-decoration: none; 
+      font-size: 14px; 
+      padding: 8px 12px; 
+      border-radius: 12px;
+      position: relative;
+      transition: all 0.3s ease;
+      overflow: hidden;
+    }
+    
+    .nav a::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,0.2), transparent);
+      transition: left 0.5s;
+    }
+    
+    .nav a:hover::before { left: 100%; }
+    .nav a:hover { 
+      background: var(--border); 
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    
+    .btn { 
+      background: var(--gradient-1); 
+      color: #fff; 
+      border: 0; 
+      padding: 10px 16px; 
+      border-radius: 12px; 
+      cursor: pointer; 
+      font-weight: 600;
+      position: relative;
+      overflow: hidden;
+      transition: all 0.3s ease;
+      text-decoration: none;
+      display: inline-block;
+    }
+    
+    .btn::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: linear-gradient(45deg, transparent 30%, rgba(255,255,255,0.3) 50%, transparent 70%);
+      transform: translateX(-100%);
+      transition: transform 0.6s;
+    }
+    
+    .btn:hover::before { transform: translateX(100%); }
+    .btn:hover { 
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(37,99,235,0.3);
+    }
+
+    .btn-sm {
+      padding: 6px 12px;
+      font-size: 12px;
+    }
+
+    .btn-success {
+      background: var(--success);
+    }
+
+    .btn-error {
+      background: var(--error);
+    }
+    
+    .icon { font-size: 18px; vertical-align: -2px; }
+
+    /* 섹션 공통 */
+    .container { 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: 32px 16px;
+    }
+    
+    h1, h2, h3 { 
+      line-height: 1.25; 
+      margin: 0 0 12px;
+    }
+    
+    h1 { 
+      font-size: clamp(32px, 5vw, 48px);
+      background: var(--gradient-1);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      font-weight: 800;
+    }
+    
+    h2 { 
+      font-size: clamp(24px, 4vw, 32px); 
+      margin-top: 32px;
+      position: relative;
+      display: inline-block;
+    }
+    
+    h2::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 60px;
+      height: 3px;
+      background: var(--gradient-3);
+      border-radius: 2px;
+    }
+    
+    p.lead { 
+      color: var(--muted); 
+      margin: 8px 0 0;
+      font-size: 18px;
+      opacity: 0;
+      animation: slideInUp 1s ease 0.3s forwards;
+    }
+
+    /* 히어로 섹션 */
+    .hero {
+      padding: 80px 16px 60px; 
+      text-align: center;
+      background: 
+        radial-gradient(circle at 20% 80%, rgba(120, 119, 198, 0.3), transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(255, 119, 198, 0.3), transparent 50%),
+        radial-gradient(circle at 40% 40%, rgba(120, 200, 255, 0.2), transparent 50%);
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: 
+        linear-gradient(45deg, transparent 40%, rgba(255,255,255,0.1) 50%, transparent 60%);
+      animation: shimmer 3s infinite;
+      pointer-events: none;
+    }
+    
+    .hero .floating-elements {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      pointer-events: none;
+    }
+    
+    .floating-elements::before,
+    .floating-elements::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      background: var(--gradient-2);
+      opacity: 0.1;
+      animation: float 6s ease-in-out infinite;
+    }
+    
+    .floating-elements::before {
+      width: 100px;
+      height: 100px;
+      top: 20%;
+      right: 20%;
+      animation-delay: -2s;
+    }
+    
+    .floating-elements::after {
+      width: 150px;
+      height: 150px;
+      bottom: 30%;
+      left: 10%;
+      animation-delay: -4s;
+    }
+    
+    .hero .actions { 
+      margin-top: 24px; 
+      display: flex; 
+      gap: 12px; 
+      justify-content: center; 
+      flex-wrap: wrap;
+      opacity: 0;
+      animation: slideInUp 1s ease 0.6s forwards;
+    }
+    
+    .ghost { 
+      background: rgba(255,255,255,0.1); 
+      border: 1px solid rgba(255,255,255,0.2); 
+      color: var(--text);
+      backdrop-filter: blur(10px);
+    }
+    
+    .ghost:hover {
+      background: rgba(255,255,255,0.2);
+      border-color: rgba(255,255,255,0.3);
+    }
+
+    /* 그리드 카드 */
+    .grid { 
+      display: grid; 
+      gap: 20px; 
+      grid-template-columns: repeat(12, 1fr);
+    }
+    
+    .col-4 { grid-column: span 12; }
+    .col-6 { grid-column: span 12; }
+    .col-8 { grid-column: span 12; }
+    .col-12 { grid-column: span 12; }
+    
+    @media (min-width: 720px) { 
+      .col-4 { grid-column: span 4; }
+      .col-6 { grid-column: span 6; } 
+      .col-8 { grid-column: span 8; }
+    }
+    
+    .card { 
+      background: var(--card); 
+      border: 1px solid var(--border); 
+      border-radius: 20px; 
+      padding: 24px; 
+      height: 100%;
+      position: relative;
+      transition: all 0.4s ease;
+      overflow: hidden;
+    }
+    
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: var(--gradient-3);
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+    
+    .card:hover::before { transform: scaleX(1); }
+    .card:hover { 
+      transform: translateY(-8px);
+      box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+      border-color: var(--primary);
+    }
+    
+    .card:nth-child(1) { animation: slideInLeft 0.6s ease 0.2s both; }
+    .card:nth-child(2) { animation: slideInUp 0.6s ease 0.4s both; }
+    .card:nth-child(3) { animation: slideInRight 0.6s ease 0.6s both; }
+    
+    .card h3 { 
+      margin: 12px 0 8px; 
+      font-size: 20px;
+      font-weight: 700;
+    }
+    
+    .tag { 
+      display: inline-block; 
+      font-size: 12px; 
+      padding: 4px 12px; 
+      border-radius: 20px; 
+      background: var(--gradient-4);
+      color: white;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    /* 페이지 섹션 */
+    .page-section {
+      display: none;
+      animation: fadeIn 0.5s ease;
+    }
+
+    .page-section.active {
+      display: block;
+    }
+
+    /* 게시판 스타일 */
+    .board-controls {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .search-bar {
+      display: flex;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .search-bar input {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .search-bar select {
+      padding: 8px 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+      font-size: 14px;
+    }
+
+    .post-list {
+      display: grid;
+      gap: 16px;
+    }
+
+    .post-item {
+      background: var(--card);
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      padding: 20px;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+
+    .post-item:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+      border-color: var(--primary);
+    }
+
+    .post-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 8px;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .post-title {
+      font-size: 18px;
+      font-weight: 600;
+      color: var(--text);
+      margin: 0;
+    }
+
+    .post-category {
+      font-size: 12px;
+      padding: 2px 8px;
+      border-radius: 12px;
+      background: var(--primary);
+      color: white;
+    }
+
+    .post-meta {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    .post-excerpt {
+      color: var(--muted);
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    /* 글 작성/수정 폼 */
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      background: var(--card);
+      color: var(--text);
+      font-size: 14px;
+      font-family: inherit;
+    }
+
+    .form-group textarea {
+      min-height: 300px;
+      resize: vertical;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 12px;
+      justify-content: flex-end;
+      flex-wrap: wrap;
+    }
+
+    /* 글 상세 보기 */
+    .post-detail {
+      max-width: 800px;
+      margin: 0 auto;
+    }
+
+    .post-detail-header {
+      text-align: center;
+      margin-bottom: 32px;
+      padding-bottom: 24px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .post-detail-title {
+      font-size: 32px;
+      font-weight: 700;
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+
+    .post-detail-meta {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .post-detail-content {
+      font-size: 16px;
+      line-height: 1.8;
+      white-space: pre-wrap;
+    }
+
+    .post-detail-actions {
+      margin-top: 32px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 12px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    /* 알림 메시지 */
+    .alert {
+      padding: 12px 16px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      border: 1px solid;
+    }
+
+    .alert-success {
+      background: rgba(16, 185, 129, 0.1);
+      border-color: var(--success);
+      color: var(--success);
+    }
+
+    .alert-error {
+      background: rgba(239, 68, 68, 0.1);
+      border-color: var(--error);
+      color: var(--error);
+    }
+
+    /* 스크롤 인디케이터 */
+    .scroll-indicator {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 0%;
+      height: 3px;
+      background: var(--gradient-3);
+      z-index: 1000;
+      transition: width 0.3s ease;
+    }
+
+    /* 푸터 */
+    footer { 
+      border-top: 1px solid var(--border); 
+      margin-top: 60px;
+      background: linear-gradient(135deg, rgba(37,99,235,0.05), rgba(6,182,212,0.02));
+    }
+    
+    .foot { 
+      max-width: 1200px; 
+      margin: 0 auto; 
+      padding: 24px 16px; 
+      display: flex; 
+      justify-content: space-between; 
+      align-items: center; 
+      gap: 8px; 
+      font-size: 14px; 
+      color: var(--muted);
+    }
+
+    /* 유틸 */
+    .row { 
+      display: flex; 
+      gap: 12px; 
+      align-items: center; 
+      flex-wrap: wrap;
+    }
+    
+    .hidden { display: none; }
+    .sr { 
+      position: absolute; 
+      width: 1px; 
+      height: 1px; 
+      padding: 0; 
+      margin: -1px; 
+      overflow: hidden; 
+      clip: rect(0,0,0,0); 
+      border: 0;
+    }
+
+    /* 반응형 */
+    @media (max-width: 720px) {
+      .board-controls {
+        flex-direction: column;
+        align-items: stretch;
+      }
+
+      .search-bar {
+        justify-content: center;
+      }
+
+      .form-actions {
+        justify-content: center;
+      }
+
+      .post-detail-actions {
+        flex-direction: column;
+      }
+    }
   </style>
 </head>
 <body>
-  <header>
-    <h1>안녕하세요, 주원의 홈페이지!</h1>
+  <div class="scroll-indicator" id="scrollIndicator"></div>
+
+  <header id="header">
+    <nav class="nav">
+      <div class="row">
+        <strong class="brand">성주원</strong>
+        <span class="tag">법조기자</span>
+      </div>
+      <div class="row">
+        <a href="#" onclick="showPage('home')" class="enhanced-hover">홈</a>
+        <a href="#" onclick="showPage('about')" class="enhanced-hover">소개</a>
+        <a href="#" onclick="showPage('blog')" class="enhanced-hover">블로그</a>
+        <a href="https://media.naver.com/journalist/018/31729" target="_blank" rel="noopener" class="enhanced-hover">기사</a>
+        <a href="#" onclick="showPage('contact')" class="enhanced-hover">연락</a>
+        <button id="themeBtn" class="btn ghost enhanced-hover" aria-pressed="false" title="다크모드 전환">
+          <span class="icon">🌙</span> 테마
+        </button>
+      </div>
+    </nav>
   </header>
-  <section>
-    <p>이곳은 내가 만든 첫 웹페이지예요.</p>
-    <button onclick="alert('방문해 주셔서 감사합니다!')">눌러보세요</button>
+
+  <!-- 홈 페이지 -->
+  <section id="home-page" class="page-section active">
+    <!-- 히어로 -->
+    <section class="hero">
+      <div class="floating-elements"></div>
+      <div class="container">
+        <h1>안녕하세요, 성주원입니다.</h1>
+        <p class="lead">법리를 쉽게 풀어 쓰는 법조기자. 깊이 보되, 어렵지 않게 전합니다.</p>
+        <div class="actions">
+          <a class="btn enhanced-hover" href="https://media.naver.com/journalist/018/31729" target="_blank" rel="noopener">최신 기사 보기</a>
+          <a class="btn ghost enhanced-hover" href="#" onclick="showPage('blog')">개인 블로그</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 소개 -->
+    <section id="about">
+      <div class="container">
+        <h2>소개</h2>
+        <p>"어렵고 멀게만 느껴지는 법, 쉽게 풀어 드립니다."
+2007년 기자 생활을 시작한 뒤 지금까지, 법과 사람 사이의 이야기를 쉽고 명확하게 전하는 데 힘써왔습니다. 복잡한 판결과 제도도 독자가 공감할 수 있는 언어로 풀어내는 것이 제 가장 큰 즐거움입니다.</p>
+        <div class="grid" style="margin-top: 24px;">
+          <div class="card col-4 enhanced-hover">
+            <span class="tag">전문</span>
+            <h3>형사·사법 정책</h3>
+            <p class="meta">분석·데이터 기반</p>
+          </div>
+          <div class="card col-4 enhanced-hover">
+            <span class="tag">관심</span>
+            <h3>법·기술(AI)</h3>
+            <p class="meta">AI 법·정책 취재</p>
+          </div>
+          <div class="card col-4 enhanced-hover">
+            <span class="tag">콘텐츠</span>
+            <h3>기획 시리즈</h3>
+            <p class="meta">상·중·하 패키지</p>
+          </div>
+        </div>
+      </div>
+    </section>
   </section>
-  <footer>© 2025 Ju-won</footer>
+
+  <!-- 소개 페이지 -->
+  <section id="about-page" class="page-section">
+    <div class="container">
+      <h2>상세 소개</h2>
+      <div class="grid">
+        <div class="card col-8">
+          <h3>경력</h3>
+          <p>2007년 기자 생활을 시작한 이후, 법조 분야에서 다양한 이슈를 취재하고 분석해왔습니다.</p>
+          <ul>
+            <li>이데일리 법조팀 기자</li>
+            <li>형사·사법정책 전문 취재</li>
+            <li>AI와 법률 분야 연구</li>
+            <li>데이터 기반 심층 보도</li>
+          </ul>
+        </div>
+        <div class="card col-4">
+          <h3>전문 분야</h3>
+          <div class="tag" style="margin: 4px;">형사법</div>
+          <div class="tag" style="margin: 4px;">사법정책</div>
+          <div class="tag" style="margin: 4px;">AI 법률</div>
+          <div class="tag" style="margin: 4px;">교정정책</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 블로그 페이지 -->
+  <section id="blog-page" class="page-section">
+    <div class="container">
+      <div class="board-controls">
+        <h2 style="margin: 0;">개인 블로그</h2>
+        <div class="row">
+          <div class="search-bar">
+            <select id="categoryFilter">
+              <option value="">전체 카테고리</option>
+              <option value="법률분석">법률분석</option>
+              <option value="칼럼">칼럼</option>
+              <option value="시사해설">시사해설</option>
+              <option value="기타">기타</option>
+            </select>
+            <input type="text" id="searchInput" placeholder="검색어 입력">
+            <button class="btn btn-sm" onclick="searchPosts()">검색</button>
+          </div>
+          <button class="btn" onclick="showWriteForm()">글쓰기</button>
+        </div>
+      </div>
+      
+      <div id="postList" class="post-list">
+        <!-- 글 목록이 여기에 표시됩니다 -->
+      </div>
+    </div>
+  </section>
+
+  <!-- 글쓰기 페이지 -->
+  <section id="write-page" class="page-section">
+    <div class="container">
+      <h2 id="writePageTitle">새 글 작성</h2>
+      
+      <div id="authSection">
+        <div class="form-group">
+          <label for="adminPassword">관리자 비밀번호:</label>
+          <input type="password" id="adminPassword" placeholder="비밀번호를 입력하세요">
+        </div>
+        <button class="btn" onclick="authenticate()">인증</button>
+      </div>
+
+      <div id="writeForm" class="hidden">
+        <div id="alertContainer"></div>
+        
+        <div class="form-group">
+          <label for="postTitle">제목:</label>
+          <input type="text" id="postTitle" placeholder="글 제목을 입력하세요" required>
+        </div>
+
+        <div class="form-group">
+          <label for="postCategory">카테고리:</label>
+          <select id="postCategory" required>
+            <option value="">카테고리 선택</option>
+            <option value="법률분석">법률분석</option>
+            <option value="칼럼">칼럼</option>
+            <option value="시사해설">시사해설</option>
+            <option value="기타">기타</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="postContent">내용:</label>
+          <textarea id="postContent" placeholder="글 내용을 입력하세요" required></textarea>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn ghost" onclick="showPage('blog')">취소</button>
+          <button class="btn" onclick="savePost()">저장</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 글 상세보기 페이지 -->
+  <section id="detail-page" class="page-section">
+    <div class="container">
+      <div class="post-detail">
+        <div class="post-detail-header">
+          <h1 class="post-detail-title" id="detailTitle"></h1>
+          <div class="post-detail-meta">
+            <span id="detailCategory" class="post-category"></span>
+            <span id="detailDate"></span>
+          </div>
+        </div>
+        
+        <div class="post-detail-content" id="detailContent"></div>
+        
+        <div class="post-detail-actions">
+          <button class="btn ghost" onclick="showPage('blog')">목록으로</button>
+          <button class="btn ghost" onclick="editPost(currentPostId)" id="editBtn">수정</button>
+          <button class="btn btn-error" onclick="deletePost(currentPostId)" id="deleteBtn">삭제</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 연락 페이지 -->
+  <section id="contact-page" class="page-section">
+    <div class="container">
+      <h2>연락</h2>
+      <p>이메일로 연락 주세요. 아래 버튼을 누르면 복사됩니다.</p>
+      <div class="row">
+        <button class="btn enhanced-hover" id="copyEmail">이메일 복사</button>
+        <a class="btn ghost enhanced-hover" id="mailto" href="mailto:you@example.com?subject=%5B문의%5D%20안녕하세요">메일 쓰기</a>
+      </div>
+      <p class="meta" id="copyMsg" role="status" aria-live="polite"></p>
+    </div>
+  </section>
+
+  <footer>
+    <div class="foot">
+      <span>© <span id="year"></span> Ju-won. 업데이트: <span id="updated"></span></span>
+      <a href="#top" class="meta enhanced-hover">맨 위로 ↑</a>
+    </div>
+  </footer>
+
+  <script>
+    // 전역 변수
+    let posts = [];
+    let currentPostId = null;
+    let isAuthenticated = false;
+    const ADMIN_PASSWORD = 'your_admin_password_918273za'; //
+
+    // 페이지 관리
+    function showPage(pageName) {
+      document.querySelectorAll('.page-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      document.getElementById(pageName + '-page').classList.add('active');
+      
+      if (pageName === 'blog') {
+        loadPosts();
+      }
+    }
+
+    // 스크롤 인디케이터
+    window.addEventListener('scroll', () => {
+      const scrollTop = document.documentElement.scrollTop;
+      const scrollHeight = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrollPercent = (scrollTop / scrollHeight) * 100;
+      document.getElementById('scrollIndicator').style.width = scrollPercent + '%';
+      
+      // 헤더 스크롤 이펙트
+      const header = document.getElementById('header');
+      if (scrollTop > 50) {
+        header.classList.add('scrolled');
+      } else {
+        header.classList.remove('scrolled');
+      }
+    });
+
+    // 다크모드 토글
+    const btn = document.getElementById('themeBtn');
+    const stored = localStorage.getItem('theme');
+    if (stored === 'dark') document.documentElement.setAttribute('data-theme', 'dark');
+    btn?.addEventListener('click', () => {
+      const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+      document.documentElement.setAttribute('data-theme', isDark ? 'light' : 'dark');
+      localStorage.setItem('theme', isDark ? 'light' : 'dark');
+      btn.setAttribute('aria-pressed', String(!isDark));
+    });
+
+    // 이메일 복사
+    const email = 'sjw1@edaily.co.kr';
+    const copyBtn = document.getElementById('copyEmail');
+    const copyMsg = document.getElementById('copyMsg');
+    copyBtn?.addEventListener('click', async () => {
+      try { 
+        await navigator.clipboard.writeText(email);
+        copyMsg.textContent = '이메일이 복사되었습니다: ' + email;
+        copyMsg.style.color = 'var(--primary)';
+      } catch (e) { 
+        copyMsg.textContent = '복사에 실패했습니다. 직접 입력해주세요: ' + email;
+        copyMsg.style.color = 'var(--muted)';
+      }
+    });
+    document.getElementById('mailto')?.setAttribute('href', 'mailto:' + email + '?subject=%5B문의%5D%20안녕하세요');
+
+    // 년도/업데이트 날짜
+    document.getElementById('year').textContent = new Date().getFullYear();
+    const d = new Date();
+    document.getElementById('updated').textContent = d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+
+    // 게시판 기능들
+    function loadPosts() {
+      const savedPosts = localStorage.getItem('blog_posts');
+      if (savedPosts) {
+        posts = JSON.parse(savedPosts);
+      } else {
+        // 샘플 게시글
+        posts = [
+          {
+            id: 1,
+            title: '법정 AI 도입의 현실과 과제',
+            category: '법률분석',
+            content: '최근 법정에서 AI 기술 도입이 활발히 논의되고 있습니다. 이번 글에서는 현재 진행 상황과 앞으로의 과제에 대해 분석해보겠습니다.\n\n인공지능 기술이 법무 분야에 도입되면서 판례 검색, 법률 문서 작성, 심지어 판결 보조까지 다양한 영역에서 활용되고 있습니다. 특히 미국과 유럽에서는 이미 상당한 진전을 보이고 있어 우리나라도 이에 대한 준비가 필요한 시점입니다.',
+            date: '2025-01-15',
+            excerpt: '법정 AI 도입의 현황과 향후 과제를 분석합니다.'
+          },
+          {
+            id: 2,
+            title: '전자감독제도 개선방안에 대한 제언',
+            category: '칼럼',
+            content: '현행 전자감독제도의 문제점을 짚어보고, 실질적인 개선방안을 제시해보고자 합니다.\n\n전자감독제도는 2008년 도입 이후 꾸준히 확대되어 왔지만, 여전히 많은 한계점들이 존재합니다. 예산 부족, 인력 부족, 기술적 한계 등이 복합적으로 작용하면서 제도의 실효성에 의문이 제기되고 있는 상황입니다.',
+            date: '2025-01-10',
+            excerpt: '전자감독제도의 현재 문제점과 개선 방향을 제안합니다.'
+          }
+        ];
+        savePosts();
+      }
+      displayPosts();
+    }
+
+    function displayPosts(filteredPosts = null) {
+      const postList = document.getElementById('postList');
+      const postsToShow = filteredPosts || posts;
+      
+      if (postsToShow.length === 0) {
+        postList.innerHTML = '<p style="text-align: center; color: var(--muted);">작성된 글이 없습니다.</p>';
+        return;
+      }
+
+      postList.innerHTML = postsToShow.map(post => `
+        <div class="post-item" onclick="showPostDetail(${post.id})">
+          <div class="post-header">
+            <h3 class="post-title">${post.title}</h3>
+            <span class="post-category">${post.category}</span>
+          </div>
+          <div class="post-meta">${post.date}</div>
+          <div class="post-excerpt">${post.excerpt}</div>
+        </div>
+      `).join('');
+    }
+
+    function showPostDetail(postId) {
+      const post = posts.find(p => p.id === postId);
+      if (!post) return;
+
+      currentPostId = postId;
+      document.getElementById('detailTitle').textContent = post.title;
+      document.getElementById('detailCategory').textContent = post.category;
+      document.getElementById('detailDate').textContent = post.date;
+      document.getElementById('detailContent').textContent = post.content;
+      
+      // 관리자만 수정/삭제 버튼 표시
+      document.getElementById('editBtn').style.display = isAuthenticated ? 'inline-block' : 'none';
+      document.getElementById('deleteBtn').style.display = isAuthenticated ? 'inline-block' : 'none';
+      
+      showPage('detail');
+    }
+
+    function showWriteForm(editPost = null) {
+      currentPostId = editPost ? editPost.id : null;
+      
+      if (editPost) {
+        document.getElementById('writePageTitle').textContent = '글 수정';
+        document.getElementById('postTitle').value = editPost.title;
+        document.getElementById('postCategory').value = editPost.category;
+        document.getElementById('postContent').value = editPost.content;
+      } else {
+        document.getElementById('writePageTitle').textContent = '새 글 작성';
+        document.getElementById('postTitle').value = '';
+        document.getElementById('postCategory').value = '';
+        document.getElementById('postContent').value = '';
+      }
+
+      // 인증 상태에 따라 폼 표시
+      if (isAuthenticated) {
+        document.getElementById('authSection').style.display = 'none';
+        document.getElementById('writeForm').classList.remove('hidden');
+      } else {
+        document.getElementById('authSection').style.display = 'block';
+        document.getElementById('writeForm').classList.add('hidden');
+        document.getElementById('adminPassword').value = '';
+      }
+
+      showPage('write');
+    }
+
+    function authenticate() {
+      const password = document.getElementById('adminPassword').value;
+      if (password === ADMIN_PASSWORD) {
+        isAuthenticated = true;
+        document.getElementById('authSection').style.display = 'none';
+        document.getElementById('writeForm').classList.remove('hidden');
+        showAlert('인증되었습니다.', 'success');
+      } else {
+        showAlert('비밀번호가 올바르지 않습니다.', 'error');
+      }
+    }
+
+    function savePost() {
+      const title = document.getElementById('postTitle').value.trim();
+      const category = document.getElementById('postCategory').value;
+      const content = document.getElementById('postContent').value.trim();
+
+      if (!title || !category || !content) {
+        showAlert('모든 필드를 입력해주세요.', 'error');
+        return;
+      }
+
+      const date = new Date().toISOString().split('T')[0];
+      const excerpt = content.substring(0, 100) + (content.length > 100 ? '...' : '');
+
+      if (currentPostId) {
+        // 수정
+        const postIndex = posts.findIndex(p => p.id === currentPostId);
+        if (postIndex !== -1) {
+          posts[postIndex] = { ...posts[postIndex], title, category, content, excerpt };
+        }
+      } else {
+        // 새 글 작성
+        const newPost = {
+          id: Date.now(),
+          title,
+          category,
+          content,
+          date,
+          excerpt
+        };
+        posts.unshift(newPost);
+      }
+
+      savePosts();
+      showAlert('글이 저장되었습니다.', 'success');
+      setTimeout(() => showPage('blog'), 1500);
+    }
+
+    function editPost(postId) {
+      if (!isAuthenticated) {
+        showAlert('권한이 없습니다.', 'error');
+        return;
+      }
+
+      const post = posts.find(p => p.id === postId);
+      if (post) {
+        showWriteForm(post);
+      }
+    }
+
+    function deletePost(postId) {
+      if (!isAuthenticated) {
+        showAlert('권한이 없습니다.', 'error');
+        return;
+      }
+
+      if (confirm('정말 삭제하시겠습니까?')) {
+        posts = posts.filter(p => p.id !== postId);
+        savePosts();
+        showPage('blog');
+      }
+    }
+
+    function searchPosts() {
+      const searchTerm = document.getElementById('searchInput').value.toLowerCase();
+      const category = document.getElementById('categoryFilter').value;
+
+      const filtered = posts.filter(post => {
+        const matchesSearch = !searchTerm || 
+          post.title.toLowerCase().includes(searchTerm) || 
+          post.content.toLowerCase().includes(searchTerm);
+        const matchesCategory = !category || post.category === category;
+        return matchesSearch && matchesCategory;
+      });
+
+      displayPosts(filtered);
+    }
+
+    function savePosts() {
+      localStorage.setItem('blog_posts', JSON.stringify(posts));
+    }
+
+    function showAlert(message, type) {
+      const alertContainer = document.getElementById('alertContainer');
+      alertContainer.innerHTML = `<div class="alert alert-${type}">${message}</div>`;
+      setTimeout(() => {
+        alertContainer.innerHTML = '';
+      }, 3000);
+    }
+
+    // 엔터키로 검색 및 인증
+    document.addEventListener('DOMContentLoaded', () => {
+      // 검색 엔터키 이벤트
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            searchPosts();
+          }
+        });
+      }
+      
+      // 비밀번호 입력 엔터키 이벤트
+      const adminPassword = document.getElementById('adminPassword');
+      if (adminPassword) {
+        adminPassword.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') {
+            authenticate();
+          }
+        });
+      }
+
+      // 카테고리 필터 변경시 자동 검색
+      const categoryFilter = document.getElementById('categoryFilter');
+      if (categoryFilter) {
+        categoryFilter.addEventListener('change', searchPosts);
+      }
+
+      // 초기 로드
+      loadPosts();
+    });
+  </script>
 </body>
 </html>
